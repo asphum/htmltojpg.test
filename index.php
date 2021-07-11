@@ -4,9 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Domvas!</title>
+  <title>Slip Test</title>
 
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="src/main.css">
 
 </head>
@@ -70,48 +69,48 @@
 
     </div>
 
-    <button
-      style="padding:10px 15px;border-radius: 6px;border:none;font-size: 1.5rem;margin:20px;background: green;cursor: pointer;color:#fff;"
-      onclick="snapShot()" id="downloadnow">snapShot</button>
+    <button style="padding:10px 15px;border-radius: 6px;border:none;font-size: 1.5rem;margin:20px;background: green;cursor: pointer;color:#fff;" onclick="snapShot()" id="downloadnow">snapShot</button>
 
-    <button
-      style="padding:10px 15px;border-radius: 6px;border:none;font-size: 1.5rem;margin:20px;background: green;cursor: pointer;color:#fff;"
-      onclick="downloadImg()" id="downloadnow">downloadImg</button>
+    <button style="padding:10px 15px;border-radius: 6px;border:none;font-size: 1.5rem;margin:20px;background: green;cursor: pointer;color:#fff;" onclick="downloadImg()" id="downloadnow">downloadImg</button>
 
     <script src="./src/dom-to-image.min.js"></script>
+    <!-- <script src="./src/FileSaver.min.js"></script> -->
 
     <script>
-    var node = document.getElementById('slipdom');
+      var node = document.getElementById('slipdom');
 
-    function snapShot() {
+      function snapShot() {
+        domtoimage.toPng(node).then(function(dataUrl) {
+          var img = new Image();
+          img.src = dataUrl;
+          document.body.appendChild(img);
+        }).catch(function(error) {
+          console.error('oops, something went wrong!', error);
+        });
+      }
 
-      domtoimage.toPng(node).then(function(dataUrl) {
-        var img = new Image();
-        img.src = dataUrl;
-        document.body.appendChild(img);
-      }).catch(function(error) {
-        console.error('oops, something went wrong!', error);
-      });
-    }
+      function downloadImg() {
+        domtoimage.toPng(node).then(function(dataUrl) {
+          var img = new Image();
+          img.src = dataUrl;
+          var link = document.createElement('a');
+          // var file = new Blob();
+          // var file = new Blob(["CONTENT"], {
+          //   type: "text/plain"
+          // });
+          // localStorage.setItem("link", link);
+          // link.href = URL.createObjectURL(file)
+
+          link.download = './photos/test.png';
+          // link.download = './photos/test.png';
+          link.href = dataUrl;
+          link.click();
 
 
-    function downloadImg() {
-
-      domtoimage.toPng(node).then(function(dataUrl) {
-        var img = new Image();
-        img.src = dataUrl;
-        // document.body.appendChild(img);
-        var link = document.createElement('a');
-        link.download = Date(), '.png';
-        link.href = dataUrl;
-        // document.body.appendChild(link);
-        link.click();
-        // document.body.removeChild(link);
-
-      }).catch(function(error) {
-        console.error('oops, something went wrong!', error);
-      });
-    }
+        }).catch(function(error) {
+          console.error('oops, something went wrong!', error);
+        });
+      }
     </script>
 </body>
 
